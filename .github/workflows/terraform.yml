@@ -417,14 +417,14 @@ jobs:
             echo "::notice::Skipping Terraform execution - not a PR or push to ${{ inputs.default_branch }}"
           fi
 
-      - name: Configure AWS credentials
+      - name: "Configure AWS credentials"
         if: ${{ inputs.aws_oidc_role_arn != '' }}
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: blw-ofag-ufag/github-workflows/.github/actions/aws/configure_credentials@main
         with:
-          role-to-assume: ${{ inputs.aws_oidc_role_arn }}
-          role-session-name: GitHubActions-${{ github.run_id }}
-          aws-region: ${{ inputs.aws_default_region }}
-          role-duration-seconds: ${{ inputs.aws_oidc_role_duration_seconds }}
+          AWS_ROLE_ARN_TO_ASSUME: ${{ inputs.aws_oidc_role_arn }}
+          AWS_REGION: ${{ inputs.aws_default_region }}
+          ROLE_SESSION_NAME: GitHubActions-${{ github.run_id }}
+          ROLE_DURATION_SECONDS: ${{ inputs.aws_oidc_role_duration_seconds }}
 
       - name: Terraform Init
         if: ${{ steps.set_execution_type.outputs.type != 'skip' }}
