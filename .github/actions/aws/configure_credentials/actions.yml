@@ -30,8 +30,13 @@ inputs:
 
   AWS_REGION:
     description: "in which aws region to assume the role at ? Defaults to eu-central-2 ( Zurich )"
-    required: true
+    required: false
     default: "eu-central-2"
+
+  AWS_AUDIENCE:
+    description: "Audience for the role assumption. Defaults to 'sts.amazonaws.com'."
+    required: false
+    default: "sts.amazonaws.com"
 
 runs:
   using: "composite"
@@ -48,5 +53,6 @@ runs:
         role-session-name: ${{ inputs.AWS_SESSION_NAME }} # name of the session for auditing purposes
         aws-region: ${{ inputs.AWS_REGION }} # region where the role is defined
         unset-current-credentials: true # unset any previously configured credentials to avoid leakage
+        audience: ${{ inputs.AWS_AUDIENCE }} # audience for AWS STS
 
 

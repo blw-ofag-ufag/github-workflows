@@ -423,8 +423,8 @@ jobs:
         with:
           AWS_ROLE_ARN_TO_ASSUME: ${{ inputs.aws_oidc_role_arn }}
           AWS_REGION: ${{ inputs.aws_default_region }}
-          ROLE_SESSION_NAME: GitHubActions-${{ github.run_id }}
-          ROLE_DURATION_SECONDS: ${{ inputs.aws_oidc_role_duration_seconds }}
+          AWS_SESSION_NAME: GitHubActions-${{ github.run_id }}
+          AWS_SESSION_DURATION: ${{ inputs.aws_oidc_role_duration_seconds }}
 
       - name: Terraform Init
         if: ${{ steps.set_execution_type.outputs.type != 'skip' }}
