@@ -133,6 +133,16 @@ on:
         default: 'WARNING'
         required: false
         type: string
+      enable_ecr_oci_modules:
+        description: 'Enable ECR authentication for OCI modules. Set to true if using OCI modules from ECR'
+        default: false
+        required: false
+        type: boolean
+      ecr_oci_registry_ids:
+        description: 'Comma-separated list of ECR registry IDs to authenticate with (e.g., "031244176730,123456789012")'
+        default: ''
+        required: false
+        type: string
     secrets:
       # GitHub App credentials to use instead of default GITHUB_TOKEN to avoid not triggering workflow runs on commit
       GH_APP_ID:
@@ -459,6 +469,49 @@ jobs:
           AWS_REGION: ${{ inputs.aws_default_region }}
           AWS_SESSION_NAME: GitHubActions-${{ github.run_id }}
           AWS_SESSION_DURATION: ${{ inputs.aws_oidc_role_duration_seconds }}
+
+      - name: Setup ECR Authentication for OCI Modules
+        if: ${{ inputs.enable_ecr_oci_modules && inputs.ecr_oci_registry_ids != '' && inputs.aws_oidc_role_arn != '' }}
+        run: |
+          echo "Setting up ECR authentication for OpenTofu/Terraform OCI modules..."
+
+          # Create docker config directory
+          mkdir -p ~/.docker
+
+          # Parse comma-separated registry IDs
+          IFS=',' read -ra REGISTRY_IDS <<< "${{ inputs.ecr_oci_registry_ids }}"
+
+          # Start building the Docker config JSON
+          echo '{"auths":{' > ~/.docker/config.json
+
+          # Configure authentication for each registry
+          first=true
+          for registry_id in "${REGISTRY_IDS[@]}"; do
+            # Trim whitespace
+            registry_id=$(echo "$registry_id" | xargs)
+
+            if [ -n "$registry_id" ]; then
+              echo "Configuring authentication for ECR registry: $registry_id"
+
+              # Get ECR authorization token
+              ECR_TOKEN=$(aws ecr get-login-password --region ${{ inputs.aws_default_region }})
+              ECR_REGISTRY="${registry_id}.dkr.ecr.${{ inputs.aws_default_region }}.amazonaws.com"
+
+              # Add comma if not the first entry
+              if [ "$first" = false ]; then
+                echo ',' >> ~/.docker/config.json
+              fi
+              first=false
+
+              # Add auth entry for this registry
+              echo -n "\"${ECR_REGISTRY}\":{\"auth\":\"$(echo -n "AWS:${ECR_TOKEN}" | base64 -w 0)\"}" >> ~/.docker/config.json
+            fi
+          done
+
+          # Close the JSON
+          echo '}}' >> ~/.docker/config.json
+
+          echo "ECR authentication configured successfully for OCI modules"
 
       - name: Terraform Init
         if: ${{ steps.set_execution_type.outputs.type != 'skip' }}
