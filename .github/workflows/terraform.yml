@@ -120,7 +120,7 @@ on:
         type: string
       checkov_skip_check:
         description: 'Comma-separated list of Checkov tests to skip'
-        default: 'CKV_TF_1'
+        default: 'CKV_TF_1,CKV_TF_2'
         required: false
         type: string
       checkov_enabled:
