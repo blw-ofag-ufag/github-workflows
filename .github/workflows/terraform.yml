@@ -40,7 +40,7 @@ on:
         type: string
       terraform_version:
         description: 'Terraform version used in github action'
-        default: 'latest'
+        default: 'v0.35.0'
         required: false
         type: string
       terraform_working_directory:
