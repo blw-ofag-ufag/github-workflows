@@ -40,7 +40,7 @@ on:
         type: string
       terraform_version:
         description: 'Terraform version used in github action'
-        default: 'v0.35.0'
+        default: 'latest'
         required: false
         type: string
       terraform_working_directory:
@@ -85,7 +85,7 @@ on:
         type: string
       trivy_version:
         description: 'Trivy version to use in github action'
-        default: 'latest'
+        default: 'v0.35.0'
         required: false
         type: string
       commit_user:
