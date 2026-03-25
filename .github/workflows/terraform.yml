@@ -84,7 +84,7 @@ on:
         type: string
       trivy_version:
         description: 'Trivy version to use in github action'
-        default: 'v0.35.0'
+        default: 'v0.69.3'
         required: false
         type: string
       commit_user:
