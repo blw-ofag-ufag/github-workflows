@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/blw-ofag-ufag/github-workflows/compare/v1.0.1...v1.0.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* update default trivy versions ([37ecbfe](https://github.com/blw-ofag-ufag/github-workflows/commit/37ecbfec72bb1d43803a5572e75cb8fa71c51fcf))
+
 ## [1.0.1](https://github.com/blw-ofag-ufag/github-workflows/compare/v1.0.0...v1.0.1) (2026-03-24)
 
 
