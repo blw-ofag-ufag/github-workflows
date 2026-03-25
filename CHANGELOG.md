@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/blw-ofag-ufag/github-workflows/compare/v1.0.2...v1.0.3) (2026-03-25)
+
+
+### Bug Fixes
+
+* explicitly require terraform_version ([#6](https://github.com/blw-ofag-ufag/github-workflows/issues/6)) ([d2159a4](https://github.com/blw-ofag-ufag/github-workflows/commit/d2159a403e535d54b82569a6b7587dff5c3565cf))
+
 ## [1.0.2](https://github.com/blw-ofag-ufag/github-workflows/compare/v1.0.1...v1.0.2) (2026-03-25)
 
 
